@@ -3,7 +3,7 @@ from tempfile import NamedTemporaryFile
 
 from app.services.parser import extract_text_from_pdf
 from app.services.resume_analyzer import analyze_resume
-
+from app.services.workflow_runner import run_navix_workflow
 router = APIRouter()
 
 
@@ -18,6 +18,12 @@ async def analyze(file: UploadFile = File(...)):
             temp_file.name
         )
 
-    analysis = analyze_resume(resume_text)
+    resume_data = analyze_resume(resume_text)
+
+    result = run_navix_workflow(
+        resume_data
+    )
+
+    return result
 
     return analysis

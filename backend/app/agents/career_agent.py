@@ -20,6 +20,12 @@ def career_agent(state: NavixState):
     Job Matches:
     {state['matches']}
 
+    Skill Gaps:
+    {state["skill_gaps"]}
+
+    Resume Optimization:
+    {state["resume_optimization"]}
+    
     Return ONLY valid JSON.
 
     Do NOT return empty arrays.

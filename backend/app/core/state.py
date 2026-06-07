@@ -10,4 +10,8 @@ class NavixState(TypedDict):
 
     matches: List[Dict]
 
+    skill_gaps: Dict
+
     career_report: Dict
+
+    resume_optimization: Dict
