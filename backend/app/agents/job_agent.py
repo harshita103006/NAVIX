@@ -1,25 +1,20 @@
 from app.core.state import NavixState
+from app.services.jobs import search_adzuna_jobs
 
 
 def job_agent(state: NavixState):
 
     print("Job Agent Running...")
 
-    print(
-        "Suggested Roles:",
-        state["target_roles"]
-    )
+    jobs = []
 
-    jobs = [
-        {
-            "title": "Machine Learning Engineer",
-            "skills": ["Python", "PyTorch"]
-        },
-        {
-            "title": "Backend Developer",
-            "skills": ["Python", "FastAPI"]
-        }
-    ]
+    for role in state["target_roles"]:
+
+        print("Searching:", role)
+
+        jobs.extend(
+            search_adzuna_jobs(role)
+        )
 
     return {
         "jobs": jobs

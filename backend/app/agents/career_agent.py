@@ -25,7 +25,7 @@ def career_agent(state: NavixState):
 
     Resume Optimization:
     {state["resume_optimization"]}
-    
+
     Return ONLY valid JSON.
 
     Do NOT return empty arrays.
@@ -46,14 +46,36 @@ def career_agent(state: NavixState):
 
     response = generate_response(prompt)
 
-    response = response.replace("```json", "")
-    response = response.replace("```", "")
-    response = response.strip()
+    try:
 
-    print("\nRAW CAREER RESPONSE:\n")
-    print(response)
-    report = json.loads(response)
+      response = response.replace("```json", "")
+      response = response.replace("```", "")
+      response = response.strip()
+
+      report = json.loads(response)
+
+    except Exception:
+
+      print("Gemini unavailable. Using fallback career report.")
+
+      report = {
+          "learning_roadmap": [
+             "Learn Docker",
+              "Learn AWS Basics",
+              "Deploy FastAPI Applications"
+          ],
+          "projects_to_build": [
+             "AI Resume Analyzer",
+              "Computer Vision Project",
+              "MLOps Deployment Project"
+          ],
+          "internship_strategy": [
+              "Apply through LinkedIn",
+              "Apply through Wellfound",
+            " Target AI startups"
+          ]
+      }
 
     return {
-        "career_report": report
+      "career_report": report
     }

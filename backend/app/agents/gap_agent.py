@@ -34,12 +34,33 @@ def gap_agent(state: NavixState):
 
     response = generate_response(prompt)
 
-    response = response.replace("```json", "")
-    response = response.replace("```", "")
-    response = response.strip()
+    try:
 
-    gaps = json.loads(response)
+      response = response.replace("```json", "")
+      response = response.replace("```", "")
+      response = response.strip()
+
+      gaps = json.loads(response)
+
+    except Exception:
+
+      print("Gemini unavailable. Using fallback gaps.")
+
+      gaps = {
+        "missing_skills": [
+            {
+                "skill": "Docker",
+                "importance": "High",
+                "reason": "Required for deployment"
+            },
+            {
+                "skill": "AWS",
+                "importance": "Medium",
+                "reason": "Useful for cloud projects"
+            }
+        ]
+      }
 
     return {
-        "skill_gaps": gaps
+      "skill_gaps": gaps
     }

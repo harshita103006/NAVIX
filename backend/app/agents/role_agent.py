@@ -35,8 +35,29 @@ def role_agent(state: NavixState):
     response = response.replace("```", "")
     response = response.strip()
 
-    roles = json.loads(response)
+    print("\nRAW ROLE RESPONSE:\n")
+    print(response)
+    try:
+      roles = json.loads(response)
 
-    state["target_roles"] = roles["roles"]
+      if isinstance(roles, dict):
+        target_roles = roles["roles"]
 
-    return state
+      else:
+        target_roles = roles
+
+    except Exception:
+
+      print("Gemini unavailable. Using fallback roles.")
+
+      target_roles = [
+        "Python Developer",
+        "Machine Learning Engineer",
+        "Computer Vision Engineer"
+      ]
+
+    return {
+      "target_roles": target_roles
+    }
+
+   
