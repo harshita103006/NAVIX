@@ -5,22 +5,48 @@ from app.services.gemini import generate_response
 def analyze_resume(resume_text: str):
 
     prompt = f"""
-    Analyze the following resume.
+    Analyze this resume.
 
     Return ONLY valid JSON.
 
     {{
+      "candidate": {{
       "name": "",
       "email": "",
       "skills": [],
       "projects": [],
       "experience": [],
       "education": []
-    }}
+    }},
 
-    Resume:
-    {resume_text}
-    """
+    "roles": [],
+
+    "skill_gaps": [
+      {{
+        "skill": "",
+        "importance": "",
+        "reason": ""
+      }}
+    ],
+
+    "ats_score": 0,
+
+    "interview_questions": {{
+      "technical_questions": [],
+      "hr_questions": []
+    }},
+
+    "cover_letter": "",
+
+    "career_roadmap": {{
+      "learning_roadmap": [],
+      "projects_to_build": []
+    }}
+  }}
+
+  Resume:
+  {resume_text}
+  """
 
     response = generate_response(prompt)
 
@@ -39,10 +65,34 @@ def analyze_resume(resume_text: str):
       print("Gemini unavailable. Using fallback resume.")
 
       return {
-        "name": "Unknown Candidate",
-        "email": "",
-        "skills": [],
-        "projects": [],
-        "experience": [],
-        "education": []
+        "candidate": {
+          "name": "Unknown Candidate",
+          "email": "",
+          "skills": [],
+          "projects": [],
+          "experience": [],
+          "education": []
+        },
+
+        "roles": [
+          "Python Developer",
+          "Machine Learning Engineer",
+          "Computer Vision Engineer"
+        ],
+
+        "skill_gaps": [],
+
+        "ats_score": 75,
+
+        "interview_questions": {
+          "technical_questions": [],
+          "hr_questions": []
+        },
+
+        "cover_letter": "",
+
+        "career_roadmap": {
+          "learning_roadmap": [],
+          "projects_to_build": []
+        }
       }

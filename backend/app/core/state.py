@@ -1,7 +1,7 @@
 from typing import TypedDict, List, Dict
 
-
 class NavixState(TypedDict):
+
     resume_data: Dict
 
     target_roles: List[str]
@@ -18,8 +18,9 @@ class NavixState(TypedDict):
 
     interview_questions: Dict
 
-    cover_letter: Dict
+    cover_letter: str
 
     learning_resources: List[Dict]
 
     mock_interview: Dict
+    

@@ -18,10 +18,10 @@ async def analyze(file: UploadFile = File(...)):
             temp_file.name
         )
 
-    resume_data = analyze_resume(resume_text)
-    
+    analysis = analyze_resume(resume_text)
+
     result = run_navix_workflow(
-        resume_data
+        analysis
     )
     return {
         "candidate": result["resume_data"],
@@ -32,7 +32,10 @@ async def analyze(file: UploadFile = File(...)):
         "learning_resources": result["learning_resources"],
         "interview_questions": result["interview_questions"],
         "mock_interview": result["mock_interview"],
-        "mock_interview":result["mock_interview"],
+        "mock_interview": result.get(
+            "mock_interview",
+            {}
+        ),
         "cover_letter": result["cover_letter"]
     }
 
@@ -55,8 +58,10 @@ async def analyze(file: UploadFile = File(...)):
         "interview_questions":
             result["interview_questions"],
 
-        "mock_interview":
-            result["mock_interview"],
+        "mock_interview": result.get(
+            "mock_interview",
+            {}
+        ),
         "cover_letter":
              result["cover_letter"]
     }
