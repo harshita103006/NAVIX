@@ -19,3 +19,5 @@ class NavixState(TypedDict):
     interview_questions: Dict
 
     cover_letter: Dict
+
+    learning_resources: List[Dict]
