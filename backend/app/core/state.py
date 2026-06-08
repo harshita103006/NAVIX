@@ -15,3 +15,5 @@ class NavixState(TypedDict):
     career_report: Dict
 
     resume_optimization: Dict
+
+    interview_questions: Dict

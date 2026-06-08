@@ -10,7 +10,8 @@ def run_navix_workflow(resume_data):
         "matches": [],
         "skill_gaps": {},
         "career_report": {},
-        "resume_optimization": {}
+        "resume_optimization": {},
+        "interview_questions": {}
     }
 
     result = graph.invoke(state)
