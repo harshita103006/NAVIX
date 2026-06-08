@@ -31,6 +31,8 @@ async def analyze(file: UploadFile = File(...)):
         "skill_gaps": result["skill_gaps"],
         "learning_resources": result["learning_resources"],
         "interview_questions": result["interview_questions"],
+        "mock_interview": result["mock_interview"],
+        "mock_interview":result["mock_interview"],
         "cover_letter": result["cover_letter"]
     }
 
@@ -53,6 +55,8 @@ async def analyze(file: UploadFile = File(...)):
         "interview_questions":
             result["interview_questions"],
 
+        "mock_interview":
+            result["mock_interview"],
         "cover_letter":
              result["cover_letter"]
     }

@@ -21,3 +21,5 @@ class NavixState(TypedDict):
     cover_letter: Dict
 
     learning_resources: List[Dict]
+
+    mock_interview: Dict
