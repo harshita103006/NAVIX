@@ -19,11 +19,42 @@ async def analyze(file: UploadFile = File(...)):
         )
 
     resume_data = analyze_resume(resume_text)
-
+    
     result = run_navix_workflow(
         resume_data
     )
+    return {
+        "candidate": result["resume_data"],
+        "roles": result["target_roles"],
+        "top_jobs": result["jobs"][:5],
+        "ats_score": result["resume_optimization"]["ats_score"],
+        "skill_gaps": result["skill_gaps"],
+        "learning_resources": result["learning_resources"],
+        "interview_questions": result["interview_questions"],
+        "cover_letter": result["cover_letter"]
+    }
 
-    return result
+    return {
+        "candidate": result["resume_data"],
+
+        "roles": result["target_roles"],
+
+        "top_jobs": result["jobs"][:5],
+
+        "ats_score": result["resume_optimization"][
+            "ats_score"
+        ],
+
+        "skill_gaps": result["skill_gaps"],
+
+        "learning_resources":
+             result["learning_resources"],
+
+        "interview_questions":
+            result["interview_questions"],
+
+        "cover_letter":
+             result["cover_letter"]
+    }
 
     return analysis

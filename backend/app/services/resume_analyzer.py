@@ -28,4 +28,21 @@ def analyze_resume(resume_text: str):
     response = response.replace("```", "")
     response = response.strip()
 
-    return json.loads(response)
+    print("\nRAW RESUME RESPONSE:\n")
+    print(response)
+
+    try:
+      return json.loads(response)
+
+    except Exception:
+
+      print("Gemini unavailable. Using fallback resume.")
+
+      return {
+        "name": "Unknown Candidate",
+        "email": "",
+        "skills": [],
+        "projects": [],
+        "experience": [],
+        "education": []
+      }

@@ -21,4 +21,6 @@ state = {
 result = graph.invoke(state)
 
 print("\nFINAL OUTPUT\n")
-print(result)
+from pprint import pprint
+
+pprint(result)
