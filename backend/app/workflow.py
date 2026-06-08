@@ -10,6 +10,7 @@ from app.agents.role_agent import role_agent
 from app.agents.gap_agent import gap_agent
 from app.agents.resume_optimizer_agent import resume_optimizer_agent
 from app.agents.interview_agent import interview_agent
+from app.agents.cover_letter_agent import cover_letter_agent
 
 builder = StateGraph(NavixState)
 
@@ -26,6 +27,10 @@ builder.add_node(
 builder.add_node(
     "interview_agent",
     interview_agent
+)
+builder.add_node(
+    "cover_letter_agent",
+    cover_letter_agent
 )
 
 builder.set_entry_point("resume_agent")
@@ -46,6 +51,20 @@ builder.add_edge(
 
 builder.add_edge(
     "interview_agent",
+    "cover_letter_agent"
+)
+
+builder.add_edge(
+    "cover_letter_agent",
+    "career_agent"
+)
+builder.add_edge(
+    "interview_agent",
+    "cover_letter_agent"
+)
+
+builder.add_edge(
+    "cover_letter_agent",
     "career_agent"
 )
 builder.add_edge("career_agent", END)
