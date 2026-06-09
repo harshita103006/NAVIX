@@ -5,20 +5,35 @@ def mock_interview_agent(state: NavixState):
 
     print("Mock Interview Agent Running...")
 
-    role = state["target_roles"][0]
+    questions = state.get(
+        "interview_questions",
+        {}
+    )
+
+    technical = questions.get(
+        "technical_questions",
+        []
+    )
+
+    if technical:
+
+        question = technical[0]
+
+    else:
+
+        question = (
+            "Tell me about your most challenging project."
+        )
 
     return {
         "mock_interview": {
-            "question":
-                f"What makes you suitable for a {role} position?",
-
+            "question": question,
             "expected_points": [
-                "Relevant skills",
-                "Projects",
-                "Problem solving"
+                "Technical understanding",
+                "Problem solving",
+                "Implementation details"
             ],
-
             "sample_answer":
-                f"My experience aligns well with {role}."
+                "Provide a structured answer with project context, challenges and outcomes."
         }
     }
