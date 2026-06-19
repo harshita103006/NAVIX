@@ -7,7 +7,8 @@ import GapMatrix from './chambers/GapMatrix'
 import LearningOrbit from './chambers/LearningOrbit'
 import InterviewLab from './chambers/InterviewLab'
 import CoverLetterForge from './chambers/CoverLetterForge'
-
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 const GOLD = '#c9a84c'
 const CHAMPAGNE = '#e8d5a3'
 
@@ -25,6 +26,84 @@ export default function ResultsOS({ data, onReset }) {
 
   const candidate = data?.candidate || {}
   const candidateName = candidate.name || 'Candidate'
+  const generatePDF = () => {
+  const doc = new jsPDF()
+
+    doc.setFontSize(24)
+    doc.text('NAVIX Career Intelligence Report', 20, 20)
+
+    doc.setFontSize(12)
+    doc.text(`Candidate: ${candidate.name || 'N/A'}`, 20, 35)
+    doc.text(`Email: ${candidate.email || 'N/A'}`, 20, 43)
+    doc.text(`ATS Score: ${data?.ats_score || 0}/100`, 20, 51)
+
+    autoTable(doc, {
+      startY: 65,
+      head: [['Career Matches']],
+      body: (data?.roles || []).map(role => [role]),
+    })
+
+    autoTable(doc, {
+      startY: doc.lastAutoTable.finalY + 12,
+      head: [['Skill Gaps']],
+      body: (data?.skill_gaps?.missing_skills || []).map(item => [
+        typeof item === 'object' ? item.skill : item
+      ]),
+    })
+
+    autoTable(doc, {
+      startY: doc.lastAutoTable.finalY + 12,
+      head: [['Learning Resources']],
+      body: (data?.learning_resources || []).map(resource => [
+        typeof resource === 'object'
+        ? `${resource.skill}\nCourse: ${resource.course}\nProject: ${resource.project}`
+        : resource
+    ]),
+    })
+
+    doc.addPage()
+
+    doc.setFontSize(18)
+    doc.text('Interview Questions', 20, 20)
+
+    let y = 35
+
+    Object.values(data?.interview_questions || {})
+      .flat()
+      .forEach((q, i) => {
+        const question =
+          typeof q === 'object'
+            ? q.question || JSON.stringify(q)
+            : q
+
+        const lines = doc.splitTextToSize(
+          `${i + 1}. ${question}`,
+          170
+        )
+
+        doc.text(lines, 20, y)
+        y += lines.length * 7 + 6
+
+        if (y > 260) {
+          doc.addPage()
+          y = 20
+        }
+      })
+
+    doc.addPage()
+
+    doc.setFontSize(18)
+    doc.text('Generated Cover Letter', 20, 20)
+
+    const coverLines = doc.splitTextToSize(
+      data?.cover_letter || '',
+      170
+    )
+
+    doc.text(coverLines, 20, 35)
+
+    doc.save(`NAVIX_Report_${candidate.name || 'Candidate'}.pdf`)
+  }
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--black)', display: 'flex', flexDirection: 'column' }}>
@@ -90,7 +169,22 @@ export default function ResultsOS({ data, onReset }) {
             </button>
           ))}
         </div>
-
+        
+        <button
+          onClick={generatePDF}
+          style={{
+            fontSize: 10,
+            color: CHAMPAGNE,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            padding: '6px 12px',
+            border: '1px solid rgba(201,168,76,0.4)',
+            borderRadius: 2,
+            marginRight: 10,
+          }}
+        >
+          Export PDF
+        </button>
         {/* right: reset */}
         <button
           onClick={onReset}

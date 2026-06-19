@@ -98,9 +98,15 @@ def analyze_resume(resume_text: str):
     print(response)
 
     try:
+      print("\nCLEANED RESPONSE:\n")
+      print(response)
+
       return json.loads(response)
 
-    except Exception:
+    except Exception as e:
+
+      print("\nJSON PARSE ERROR:\n")
+      print(str(e))
 
       print("Gemini unavailable. Using fallback resume.")
 

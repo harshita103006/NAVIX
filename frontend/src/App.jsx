@@ -22,7 +22,10 @@ export default function App() {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       setData(res.data)
-      setScreen('results')
+
+      setTimeout(() => {
+        setScreen('results')
+      }, 1200)
     } catch (e) {
       const msg =
         e?.response?.data?.detail ||

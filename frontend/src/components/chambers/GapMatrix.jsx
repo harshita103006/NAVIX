@@ -18,6 +18,16 @@ function gapLabel(pct) {
 }
 
 function normalizeSkillGaps(raw) {
+
+  if (raw?.missing_skills && Array.isArray(raw.missing_skills)) {
+    return raw.missing_skills.map((item, index) => ({
+      skill:
+        typeof item === 'object'
+          ? item.skill || item.name || `Skill ${index + 1}`
+          : item,
+      gap: 80 - index * 10,
+    }))
+  }
   if (!raw || typeof raw !== 'object') return []
   if (Array.isArray(raw)) {
     return raw.map((item) => {
