@@ -18,7 +18,7 @@ export default function App() {
     try {
       const fd = new FormData()
       fd.append('file', file)
-      const res = await axios.post('http://localhost:8000/analyze-resume', fd, {
+      const res = await axios.post('https://navix-backend-quf3.onrender.com/analyze-resume', fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       setData(res.data)
