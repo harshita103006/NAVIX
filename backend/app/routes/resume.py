@@ -4,15 +4,21 @@ from tempfile import NamedTemporaryFile
 from app.services.parser import extract_text_from_pdf
 from app.services.resume_analyzer import analyze_resume
 from app.services.workflow_runner import run_navix_workflow
+
 router = APIRouter()
 
 
 @router.post("/analyze-resume")
 async def analyze(file: UploadFile = File(...)):
 
-    with NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+    contents = await file.read()
 
-        temp_file.write(await file.read())
+    if not contents:
+        return {"error": "Uploaded file is empty"}
+
+    with NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+        temp_file.write(contents)
+        temp_file.flush()
 
         resume_text = extract_text_from_pdf(
             temp_file.name
@@ -23,6 +29,7 @@ async def analyze(file: UploadFile = File(...)):
     result = run_navix_workflow(
         analysis
     )
+
     return {
         "candidate": result["resume_data"],
         "roles": result["target_roles"],
@@ -31,39 +38,9 @@ async def analyze(file: UploadFile = File(...)):
         "skill_gaps": result["skill_gaps"],
         "learning_resources": result["learning_resources"],
         "interview_questions": result["interview_questions"],
-        "mock_interview": result["mock_interview"],
         "mock_interview": result.get(
             "mock_interview",
             {}
         ),
         "cover_letter": result["cover_letter"]
     }
-
-    return {
-        "candidate": result["resume_data"],
-
-        "roles": result["target_roles"],
-
-        "top_jobs": result["jobs"][:5],
-
-        "ats_score": result["resume_optimization"][
-            "ats_score"
-        ],
-
-        "skill_gaps": result["skill_gaps"],
-
-        "learning_resources":
-             result["learning_resources"],
-
-        "interview_questions":
-            result["interview_questions"],
-
-        "mock_interview": result.get(
-            "mock_interview",
-            {}
-        ),
-        "cover_letter":
-             result["cover_letter"]
-    }
-
-    return analysis
